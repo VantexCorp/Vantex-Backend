@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS vantex_db;
+USE vantex_db;
