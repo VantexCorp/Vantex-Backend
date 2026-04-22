@@ -50,3 +50,14 @@ CREATE TABLE IF NOT EXISTS work_orders (
     FOREIGN KEY (technician_id) REFERENCES users(id) ON DELETE RESTRICT,
     FOREIGN KEY (machine_id) REFERENCES machines(id) ON DELETE RESTRICT
 );
+
+CREATE TABLE IF NOT EXISTS material_used (
+    id_work_order INT NOT NULL,
+    id_part INT NOT NULL,
+    quantity_used INT NOT NULL DEFAULT 1,
+    applied_price DECIMAL(10, 2) NOT NULL, 
+    
+    PRIMARY KEY (id_work_order, id_part),
+    FOREIGN KEY (id_work_order) REFERENCES work_orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_part) REFERENCES spare_parts(id) ON DELETE RESTRICT 
+);
