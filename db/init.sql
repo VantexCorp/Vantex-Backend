@@ -33,3 +33,20 @@ CREATE TABLE IF NOT EXISTS spare_parts (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS work_orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    wo_code VARCHAR(20) NOT NULL UNIQUE,
+    technician_id INT NOT NULL,
+    machine_id INT NOT NULL,
+    issue_description TEXT NOT NULL,
+    resolution_comment TEXT,
+    opened_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    closed_at TIMESTAMP NULL,
+    time_spent_minutes INT DEFAULT 0,
+    status ENUM('open', 'in_progress', 'closed') DEFAULT 'open',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (technician_id) REFERENCES users(id) ON DELETE RESTRICT,
+    FOREIGN KEY (machine_id) REFERENCES machines(id) ON DELETE RESTRICT
+);
