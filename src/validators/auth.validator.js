@@ -17,3 +17,15 @@ const validateRegister = [
     .isIn(['admin', 'maintenance_manager', 'technician'])
     .withMessage('Rol no válido.')
 ];
+
+const validateLogin = [
+  body('email')
+    .isEmail()
+    .withMessage('Email no válido.')
+    .normalizeEmail(),
+  body('password')
+    .notEmpty()
+    .withMessage('La contraseña es obligatoria.')
+];
+
+module.exports = { validateRegister, validateLogin };
