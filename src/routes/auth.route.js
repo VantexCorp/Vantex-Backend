@@ -30,3 +30,17 @@ router.get('/me', authenticateToken, (req, res) => {
     data: {id: req.user.id, email: req.user.email, role: req.user.role}
   });
 });
+
+// GET /api/auth/users -> Obtener todos los usuarios (Solo Admin o Manager)
+router.get('/users', authenticateToken, authorizeRoles('admin', 'maintenance_manager'), authController.getAllUsers);
+
+// PUT /api/auth/users/update/password -> Cambiar contraseña (Cualquier rol autenticado)
+router.put('/users/update/password', authenticateToken, authController.updatePassword);
+
+// PUT /api/auth/users/update/profile -> Actualizar perfil del usuario autenticado (Cualquier rol autenticado)
+router.put('/users/update/profile', authenticateToken, authController.updateUser);
+
+// PUT /api/auth/users/update/:id -> Actualizar usuario (Solo Admin y Manager)
+router.put('/users/update/:id', authenticateToken, authorizeRoles('admin', 'maintenance_manager'), authController.updateUserByAdmin);
+
+module.exports = router;
