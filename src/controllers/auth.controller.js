@@ -42,3 +42,33 @@ const updateUserByAdmin = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+const updateUser = async (req, res) => {
+    try {
+        // Seguridad: Usamos el ID del token en lugar de params para evitar que un usuario modifique a otro
+        await authService.modifyUser(req.user.id, req.body);
+        res.json({ success: true, message: "Usuario actualizado" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+const updatePassword = async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+        await authService.changePassword(req.user.id, currentPassword, newPassword);
+        res.json({ success: true, message: "Contraseña actualizada con éxito" });
+    } catch (error) {
+        const status = error.status || 400;
+        res.status(status).json({ success: false, message: error.message });
+    }
+};
+
+module.exports = { 
+  registerUser,
+  loginUser,
+  getAllUsers, 
+  updateUser,
+  updateUserByAdmin,
+  updatePassword  
+};
