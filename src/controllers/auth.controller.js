@@ -24,3 +24,21 @@ async function loginUser(req, res) {
     res.status(status).json({ success: false, message: error.message || "Error en el login" });
   }
 }
+
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await authService.findAllUsers();
+        res.json({ success: true, data: users });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+const updateUserByAdmin = async (req, res) => {
+    try {
+        await authService.modifyUserByAdmin(req.params.id, req.body);
+        res.json({ success: true, message: "Usuario actualizado correctamente por el Administrador" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
