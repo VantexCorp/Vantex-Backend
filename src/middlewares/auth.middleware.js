@@ -25,3 +25,27 @@ const authenticateToken = (req, res, next) => {
     return res.status(401).json({ success: false, message: "Token inválido o expirado." });
   }
 };
+
+/**
+ * Middleware para autorización basada en roles.
+ * Debe ir SIEMPRE después de authenticateToken.
+ * @param  {...string} allowedRoles - Roles permitidos ('admin', 'maintenance_manager', 'technician')
+ */
+const authorizeRoles = (...allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user || !req.user.role) {
+      return res.status(403).json({ success: false, message: "Acceso denegado. Rol no identificado." });
+    }
+    
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ 
+        success: false, 
+        message: `Acceso denegado. Se requiere uno de los siguientes roles: ${allowedRoles.join(', ')}` 
+      });
+    }
+    
+    next();
+  };
+};
+
+module.exports = { authenticateToken, authorizeRoles };
