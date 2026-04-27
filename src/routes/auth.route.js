@@ -21,3 +21,12 @@ router.post('/register', validateRegister, handleValidationErrors, authControlle
 
 // POST /api/auth/login -> Iniciar sesión (Público)
 router.post('/login', validateLogin, handleValidationErrors, authController.loginUser);
+
+// GET /api/auth/me -> Obtener perfil del usuario autenticado (Cualquier rol autenticado)
+router.get('/me', authenticateToken, (req, res) => {
+  res.json({
+    success: true,
+    message: "Tienes acceso VIP",
+    data: {id: req.user.id, email: req.user.email, role: req.user.role}
+  });
+});
