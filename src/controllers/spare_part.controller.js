@@ -49,3 +49,28 @@ async function getSparePartsById(req, res) {
         res.status(500).json({ message: 'Error al buscar la pieza', error: error.message })
     }
 }
+
+
+/**
+ * Crea una nueva pieza en el inventario.
+ * Verifica que el código SKU no esté duplicado antes de crearla.
+ * @param {Object} req - Objeto Request de Express.
+ * @param {Object} res - Objeto Response de Express.
+ */
+async function createSparePart(req, res) {
+    try {
+        const { sku, name, current_stock, minimum_stock, unit_price } = req.body;
+
+        const existingSparePart = await sparePartService.findSparePartBySku(sku);
+        if (existingSparePart) {
+            return res.status(400).json({ message: 'El codigo SKU ya esta registrado.' });
+        }
+
+        const newSparePart = await sparePartService.addSparePart({ sku, name, current_stock, minimum_stock, unit_price });
+        res.status(201).json({ message: 'Pieza registrada exitosamente', data: newSparePart });
+
+
+    } catch (error) {
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+    }
+}
