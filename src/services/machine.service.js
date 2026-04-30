@@ -18,3 +18,10 @@ async function findAllMachines(location, status) {
 
   return query;
 }
+
+/**
+ * Busca una máquina por su ID
+ */
+async function findMachineById(id) {
+  return await db('machines').where('id', id).first();
+}
