@@ -74,3 +74,28 @@ async function createSparePart(req, res) {
         res.status(500).json({ message: 'Error interno del servidor', error: error.message });
     }
 }
+
+
+/**
+ * Elimina una pieza del inventario por su ID.
+ * @param {Object} req - Objeto Request de Express.
+ * @param {Object} res - Objeto Response de Express.
+ */
+async function deleteSparePart(req, res) {
+    try {
+        const { id } = req.params;
+
+        const sparePart = await sparePartService.findSparePartById(id);
+
+        if (!sparePart) {
+            return res.status(404).json({ message: 'Esta pieza no se puede borrar ya que no existe.' })
+        }
+
+        await sparePartService.removeSparePart(id);
+        res.status(200).json({ message: 'Pieza eliminada exitosamente del inventario.' })
+
+
+    } catch (error) {
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message })
+    }
+}
