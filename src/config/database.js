@@ -12,4 +12,4 @@ const db = knex({
     useNullAsDefault: true
 });
 
-exports.db = db;
+module.exports = db;
