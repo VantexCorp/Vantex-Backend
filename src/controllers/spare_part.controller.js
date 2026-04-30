@@ -124,3 +124,30 @@ async function updateSparePart(req, res) {
     }
 }
 
+
+/**
+ * Obtiene todas las piezas registradas en el inventario.
+ * @param {Object} req - Objeto Request de Express.
+ * @param {Object} res - Objeto Response de Express.
+ */
+async function getAllSparePart(req, res) {
+    try {
+        const spare_part = await sparePartService.getAllSparePart();
+        res.json(spare_part);
+
+    } catch (error) {
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message })
+    }
+}
+
+
+module.exports = {
+    getSparePartsByName,
+    getSparePartsBySku,
+    getSparePartsById,
+    createSparePart,
+    deleteSparePart,
+    updateSparePart,
+    getAllSparePart
+}
+
