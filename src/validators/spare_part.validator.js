@@ -52,3 +52,44 @@ const validateCreateSparePart = [
         .withMessage('El precio unitario debe ser un número mayor o igual a 0'),
     (req, res, next) => validateResult(req, res, next)
 ];
+
+
+/**
+ * Validaciones para la actualización de un repuesto.
+ */
+const validateUpdateSparePart = [
+    param('id')
+        .exists()
+        .withMessage('El ID es obligatorio')
+        .notEmpty()
+        .withMessage('El ID no puede estar vacío')
+        .isInt()
+        .withMessage('El ID debe ser un número entero válido'),
+    body('sku')
+        .optional()
+        .isString()
+        .withMessage('El SKU debe ser una cadena de texto')
+        .trim()
+        .notEmpty()
+        .withMessage('El SKU no puede estar vacío'),
+    body('name')
+        .optional()
+        .isString()
+        .withMessage('El nombre debe ser una cadena de texto')
+        .trim()
+        .notEmpty()
+        .withMessage('El nombre no puede estar vacío'),
+    body('current_stock')
+        .optional()
+        .isInt({ min: 0 })
+        .withMessage('El stock actual debe ser un número entero mayor o igual a 0'),
+    body('minimum_stock')
+        .optional()
+        .isInt({ min: 0 })
+        .withMessage('El stock mínimo debe ser un número entero mayor o igual a 0'),
+    body('unit_price')
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage('El precio unitario debe ser un número mayor o igual a 0'),
+    (req, res, next) => validateResult(req, res, next)
+];
