@@ -121,3 +121,27 @@ const validateSkuSearch = [
         .withMessage('El parámetro sku no puede estar vacío'),
     (req, res, next) => validateResult(req, res, next)
 ];
+
+
+/**
+ * Validaciones para ID en parámetros (Borrado y Detalle).
+ */
+const validateIdParam = [
+    param('id')
+        .exists()
+        .withMessage('El ID en la URL es obligatorio')
+        .notEmpty()
+        .withMessage('El ID no puede estar vacío')
+        .isInt()
+        .withMessage('El ID debe ser un número entero válido'),
+    (req, res, next) => validateResult(req, res, next)
+];
+
+
+module.exports = {
+    validateCreateSparePart,
+    validateUpdateSparePart,
+    validateNameSearch,
+    validateSkuSearch,
+    validateIdParam
+};
