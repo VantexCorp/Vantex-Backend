@@ -17,3 +17,18 @@ async function getAllMachines(req, res) {
     res.status(500).json({ success: false, message: "Error al obtener máquinas" });
   }
 }
+
+/**
+ * Obtiene una máquina por ID
+ */
+async function getMachineById(req, res) {
+  try {
+    const machine = await machineService.findMachineById(req.params.id);
+    if (!machine) {
+      return res.status(404).json({ success: false, message: "Máquina no encontrada" });
+    }
+    res.json({ success: true, data: machine });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error en el servidor" });
+  }
+}
