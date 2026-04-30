@@ -46,3 +46,50 @@ async function findSparePartBelowMinimumStock() {
 async function findSparePartOutOfStock() {
     return await db('spare_parts').where('current_stock', '<=', 0);
 }
+
+
+/**
+ * Añade una nueva pieza al inventario.
+ */
+async function addSparePart(spareParts) {
+    const [id] = await db('spare_parts').insert(spareParts);
+    return {id, ...spareParts };
+}
+
+
+/** 
+ * Modifica los datos de una pieza (ej: el stock, el precio, etc)
+ */
+async function modifySparePart(id, updateSpareParts) {
+    await db ('spare_parts').where('id', id).update(updateSpareParts);
+    return { id, ...updateSpareParts};
+}
+
+
+/**
+ * Elimina una pieza del inventario
+ */
+async function removeSparePart(id) {
+    await db ('spare_parts').where('id', id).del();
+}
+
+
+/**
+ * Obtiene todas las piezas del inventario.
+ */
+async function getAllSparePart() {
+    return await db('spare_parts').select('*');
+}
+
+
+module.exports = {
+    findSparePartByName,
+    findSparePartById,
+    findSparePartBySku,
+    findSparePartBelowMinimumStock,
+    findSparePartOutOfStock,
+    addSparePart,
+    modifySparePart,
+    removeSparePart,
+    getAllSparePart
+};
