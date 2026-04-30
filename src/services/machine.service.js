@@ -46,3 +46,37 @@ async function countMachinesByStatus(status) {
   
   return parseInt(result.total || 0, 10);
 }
+
+/**
+ * Añade una nueva máquina al inventario
+ */
+async function addMachine(machineData) {
+  const [id] = await db('machines').insert(machineData);
+  // Devolvemos el objeto completo con su nuevo ID para que el frontend pueda pintarlo sin recargar
+  return { id, ...machineData }; 
+}
+
+/**
+ * Modifica los datos de una máquina (ej: cambiar el estado de 'broken' a 'maintenance')
+ */
+async function modifyMachine(id, updateData) {
+  await db('machines').where('id', id).update(updateData);
+  return { id, ...updateData };
+}
+
+/**
+ * Elimina una máquina del sistema
+ */
+async function removeMachine(id) {
+  await db('machines').where('id', id).del();
+}
+
+module.exports = {
+  findAllMachines,
+  findMachineById,
+  findMachineByAssetCode,
+  countMachinesByStatus,
+  addMachine,
+  modifyMachine,
+  removeMachine
+};
