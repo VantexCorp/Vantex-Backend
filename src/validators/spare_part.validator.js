@@ -93,3 +93,17 @@ const validateUpdateSparePart = [
         .withMessage('El precio unitario debe ser un número mayor o igual a 0'),
     (req, res, next) => validateResult(req, res, next)
 ];
+
+
+/**
+ * Validaciones para búsqueda por nombre.
+ */
+const validateNameSearch = [
+    query('name')
+        .exists()
+        .withMessage('El parámetro name es obligatorio para la búsqueda')
+        .trim()
+        .notEmpty()
+        .withMessage('El parámetro name no puede estar vacío'),
+    (req, res, next) => validateResult(req, res, next)
+];
