@@ -33,3 +33,16 @@ async function findMachineById(id) {
 async function findMachineByAssetCode(assetCode) {
   return await db('machines').where('asset_code', assetCode).first();
 }
+
+/**
+ * Cuenta cuántas máquinas hay en un estado específico ('broken', 'operational'...).
+ * Esto es perfecto para pintar gráficos (KPIs) en el Dashboard del frontend.
+ */
+async function countMachinesByStatus(status) {
+  const result = await db('machines')
+    .where('status', status)
+    .count('id as total')
+    .first();
+  
+  return parseInt(result.total || 0, 10);
+}
