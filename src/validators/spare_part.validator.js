@@ -107,3 +107,17 @@ const validateNameSearch = [
         .withMessage('El parámetro name no puede estar vacío'),
     (req, res, next) => validateResult(req, res, next)
 ];
+
+
+/**
+ * Validaciones para búsqueda por SKU.
+ */
+const validateSkuSearch = [
+    query('sku')
+        .exists()
+        .withMessage('El parámetro sku es obligatorio para la búsqueda')
+        .trim()
+        .notEmpty()
+        .withMessage('El parámetro sku no puede estar vacío'),
+    (req, res, next) => validateResult(req, res, next)
+];
