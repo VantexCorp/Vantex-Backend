@@ -99,3 +99,28 @@ async function deleteSparePart(req, res) {
         res.status(500).json({ message: 'Error interno del servidor', error: error.message })
     }
 }
+
+
+/**
+ * Actualiza los datos de una pieza existente por su ID.
+ * @param {Object} req - Objeto Request de Express.
+ * @param {Object} res - Objeto Response de Express.
+ */
+async function updateSparePart(req, res) {
+    try {
+        const { id } = req.params;
+        const updatedData = req.body;
+
+        const existingSparePart = await sparePartService.findSparePartById(id);
+        if (!existingSparePart) {
+            return res.status(404).json({ message: 'La pieza no se puede modificar ya que no existe.' });
+        }
+
+        const updatedSparePart = await sparePartService.modifySparePart(id, updatedData);
+        res.status(200).json({ message: 'Pieza modificada correctamente', data: updatedSparePart });
+
+    } catch (error) {
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+    }
+}
+
