@@ -25,3 +25,11 @@ async function findAllMachines(location, status) {
 async function findMachineById(id) {
   return await db('machines').where('id', id).first();
 }
+
+/**
+ * Busca una máquina por su código de activo (asset_code).
+ * ¡Muy útil para que el controlador valide que no estamos metiendo un código duplicado!
+ */
+async function findMachineByAssetCode(assetCode) {
+  return await db('machines').where('asset_code', assetCode).first();
+}
