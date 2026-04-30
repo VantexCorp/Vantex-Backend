@@ -32,3 +32,32 @@ async function getMachineById(req, res) {
     res.status(500).json({ success: false, message: "Error en el servidor" });
   }
 }
+
+/**
+ * Crear una máquina (Usando machineData)
+ */
+async function createMachine(req, res) {
+  try {
+    const existing = await machineService.findMachineByAssetCode(req.body.asset_code);
+    if (existing) {
+      return res.status(400).json({ success: false, message: "El código de activo ya existe" });
+    }
+
+    /**
+     * DEFINICIÓN DE machineData:
+     * Creamos un objeto con los nombres exactos de las columnas del init.sql
+     */
+    const machineData = {
+      asset_code: req.body.asset_code,
+      name: req.body.name,
+      location: req.body.location,
+      status: req.body.status || 'operational',
+      downtime_hourly_cost: req.body.downtime_hourly_cost || 0.00
+    };
+
+    const newMachine = await machineService.addMachine(machineData);
+    res.status(201).json({ success: true, data: newMachine });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error al crear la máquina", error: error.message });
+  }
+}
