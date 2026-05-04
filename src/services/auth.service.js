@@ -72,11 +72,20 @@ async function modifyUser(id, updateData) {
   const safeData = {};
     if (full_name !== undefined) safeData.full_name = full_name;
     if (email !== undefined) safeData.email = email;
+    if(safeData.email){
+      const existingUser = await db('users').where({ email: safeData.email }).first();
+      if (existingUser && existingUser.id !== id) {
+        throw { status: 409, message: "El email ya está registrado" };
+      }
+    }
     if (Object.keys(safeData).length === 0) {
         throw { status: 400, message: "No hay campos para actualizar" };
     }
     
-    await db('users').where({ id }).update(safeData);
+    const updatedRows = await db('users').where({ id }).update(safeData);
+    if (updatedRows === 0) {
+        throw { status: 404, message: "Usuario no encontrado" };
+    }
     
     return await findUserById(id);
 }
@@ -97,11 +106,20 @@ async function modifyUserByAdmin(id, updateData) {
     if (email !== undefined) safeData.email = email;
     if (is_active !== undefined) safeData.is_active = is_active;
     if (role !== undefined) safeData.role = role;
+    if(safeData.email){
+      const existingUser = await db('users').where({ email: safeData.email }).first();
+      if (existingUser && existingUser.id !== id) {
+        throw { status: 409, message: "El email ya está registrado" };
+      }
+    }
     if (Object.keys(safeData).length === 0) {
         throw { status: 400, message: "No hay campos para actualizar" };
     }
     
-    await db('users').where({ id }).update(safeData);
+    const updatedRows = await db('users').where({ id }).update(safeData);
+    if (updatedRows === 0) {
+        throw { status: 404, message: "Usuario no encontrado" };
+    }
     
     return await findUserById(id);
 }
