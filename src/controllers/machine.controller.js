@@ -19,6 +19,20 @@ async function getAllMachines(req, res) {
 }
 
 /**
+ * Obtiene estadísticas de las máquinas
+ */
+async function getMachineStats(req, res) {
+  try {
+    const operational = await machineService.countMachinesByStatus('operational');
+    const broken = await machineService.countMachinesByStatus('broken');
+    const maintenance = await machineService.countMachinesByStatus('maintenance');
+    res.json({ success: true, data: { operational, broken, maintenance } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error al obtener estadísticas" });
+  }
+}
+
+/**
  * Obtiene una máquina por ID
  */
 async function getMachineById(req, res) {
@@ -43,22 +57,11 @@ async function createMachine(req, res) {
       return res.status(400).json({ success: false, message: "El código de activo ya existe" });
     }
 
-    /**
-     * DEFINICIÓN DE machineData:
-     * Creamos un objeto con los nombres exactos de las columnas del init.sql
-     */
-    const machineData = {
-      asset_code: req.body.asset_code,
-      name: req.body.name,
-      location: req.body.location,
-      status: req.body.status || 'operational',
-      downtime_hourly_cost: req.body.downtime_hourly_cost || 0.00
-    };
-
-    const newMachine = await machineService.addMachine(machineData);
+    const newMachine = await machineService.addMachine(req.body);
     res.status(201).json({ success: true, data: newMachine });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error al crear la máquina", error: error.message });
+    const status = error.status || 500;
+    res.status(status).json({ success: false, message: error.status ? error.message : "Error al crear la máquina" });
   }
 }
 
@@ -69,22 +72,11 @@ async function updateMachine(req, res) {
   try {
     const { id } = req.params;
     
-    const { status, downtime_hourly_cost, name, location, asset_code } = req.body;
-    const updateData = {};
-    if (status !== undefined) updateData.status = status;
-    if (downtime_hourly_cost !== undefined) updateData.downtime_hourly_cost = downtime_hourly_cost;
-    if (name !== undefined) updateData.name = name;
-    if (location !== undefined) updateData.location = location;
-    if (asset_code !== undefined) updateData.asset_code = asset_code;
-
-    if (Object.keys(updateData).length === 0) {
-        return res.status(400).json({ success: false, message: "No hay campos válidos para actualizar" });
-    }
-
-    const updatedMachine = await machineService.modifyMachine(id, updateData);
+    const updatedMachine = await machineService.modifyMachine(id, req.body);
     res.json({ success: true, data: updatedMachine });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error al actualizar" });
+    const status = error.status || 500;
+    res.status(status).json({ success: false, message: error.message || "Error al actualizar" });
   }
 }
 
@@ -97,7 +89,8 @@ async function deleteMachine(req, res) {
     await machineService.removeMachine(req.params.id);
     res.json({ success: true, message: "Máquina eliminada correctamente" });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error al eliminar" });
+    const status = error.status || 500;
+    res.status(status).json({ success: false, message: error.message || "Error al eliminar" });
   }
 }
 
@@ -106,5 +99,6 @@ module.exports = {
   getMachineById,
   createMachine,
   updateMachine,
-  deleteMachine
+  deleteMachine,
+  getMachineStats
 };
