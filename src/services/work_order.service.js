@@ -64,3 +64,82 @@ async function findWorkOrderById(id) {
     return order;
 }
 
+async function addWorkOrder(woData) {
+    const wo_code = woData.wo_code || `WO-${Date.now().toString().slice(-6)}`;
+    
+    const [id] = await db('work_orders').insert({
+        ...woData,
+        wo_code,
+        status: 'open'
+    });
+    
+    return { id, wo_code };
+}
+
+async function startWorkOrder(id) {
+    return await db('work_orders')
+        .where({ id })
+        .update({
+            status: 'in_progress',
+            started_at: db.fn.now()
+        });
+}
+
+async function completeWorkOrder(woId, resolutionData, partsUsed = []) {
+    return await db.transaction(async (trx) => {
+        await trx('work_orders')
+            .where({ id: woId })
+            .update({
+                status: 'closed',
+                resolution_comment: resolutionData.resolution_comment,
+                time_spent_minutes: resolutionData.time_spent_minutes,
+                closed_at: db.fn.now()
+            });
+
+        if (partsUsed && partsUsed.length > 0) {
+            for (const part of partsUsed) {
+                await trx.raw('CALL sp_registrar_material_usado(?, ?, ?)', [
+                    woId, 
+                    part.id_part, 
+                    part.quantity_used
+                ]);
+            }
+        }
+
+        return { success: true };
+    });
+}
+
+async function updateWorkOrder(id, rawData) {
+    const { machine_id, technician_id, issue_description } = rawData;
+    const safeData = {};
+
+    if (machine_id !== undefined) safeData.machine_id = machine_id;
+    if (technician_id !== undefined) safeData.technician_id = technician_id;
+    if (issue_description !== undefined) safeData.issue_description = issue_description;
+
+    if (Object.keys(safeData).length === 0) {
+        throw { status: 400, message: "No hay campos válidos para actualizar" };
+    }
+
+    const updatedRows = await db('work_orders').where({ id }).update(safeData);
+    if (updatedRows === 0) {
+        throw { status: 404, message: "Orden de trabajo no encontrada" };
+    }
+
+    return await findWorkOrderById(id);
+}
+
+async function deleteWorkOrder(id) {
+    return await db('work_orders').where({ id }).del();
+}
+
+module.exports = {
+    findAllWorkOrders,
+    findWorkOrderById,
+    addWorkOrder,
+    startWorkOrder,
+    completeWorkOrder,
+    updateWorkOrder,
+    deleteWorkOrder
+};
