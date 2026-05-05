@@ -96,3 +96,51 @@ async function close(req, res) {
         res.status(400).json({ error: errorMessage });
     }
 }
+
+/**
+ * Actualiza una orden de trabajo.
+ */
+async function update(req, res) {
+    try {
+        const updatedOrder = await workOrderService.updateWorkOrder(req.params.id, req.body);
+        res.json({ message: 'Orden de trabajo actualizada correctamente', data: updatedOrder });
+    } catch (error) {
+        console.error('[WorkOrderCtrl - update] Error:', error);
+        const status = error.status || 500;
+        res.status(status).json({ error: error.message || 'Error al actualizar la orden de trabajo' });
+    }
+}
+
+/**
+ * Elimina una orden de trabajo.
+ */
+async function remove(req, res) {
+    try {
+        const order = await workOrderService.findWorkOrderById(req.params.id);
+        if (!order) {
+            return res.status(404).json({ error: 'Orden de trabajo no encontrada' });
+        }
+        
+        if (order.status !== 'open') {
+            return res.status(400).json({ 
+                error: 'No se puede eliminar una orden que ya ha sido iniciada o cerrada. Para evitar descuadres de inventario, debes cancelarla.' 
+            });
+        }
+
+        await workOrderService.deleteWorkOrder(req.params.id);
+        res.json({ message: 'Orden de trabajo eliminada correctamente' });
+    } catch (error) {
+        console.error('[WorkOrderCtrl - delete] Error:', error);
+        res.status(500).json({ error: 'Error al eliminar la orden de trabajo' });
+    }
+}
+
+module.exports = {
+    getAll,
+    getById,
+    create,
+    start,
+    close,
+    update,
+    remove
+};
