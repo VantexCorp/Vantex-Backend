@@ -72,3 +72,27 @@ async function start(req, res) {
     }
 }
 
+/**
+ * Cierra una orden de trabajo.
+ */
+async function close(req, res) {
+    try {
+        const woId = req.params.id;
+        const { resolution_comment, time_spent_minutes, partsUsed } = req.body;
+
+        await workOrderService.completeWorkOrder(
+            woId, 
+            { resolution_comment, time_spent_minutes }, 
+            partsUsed
+        );
+
+        res.json({ message: 'Orden cerrada y consumos registrados correctamente' });
+    } catch (error) {
+        console.error('[WorkOrderCtrl - close] Error:', error);
+        
+        
+        const errorMessage = error.sqlMessage || error.message || 'Error al cerrar la orden';
+        
+        res.status(400).json({ error: errorMessage });
+    }
+}
