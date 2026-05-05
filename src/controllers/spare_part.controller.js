@@ -3,151 +3,129 @@
  * @module controller/sparePart
  */
 
-
 const sparePartService = require('../services/spare_part.service');
 
-
 /**
- * Obtiene piezas por su nombre (coincidencia parcial).
- * @param {Object} req - Objeto Request de Express.
- * @param {Object} res - Objeto Response de Express.
+ * Obtiene piezas con stock por debajo del mínimo
  */
-async function getSparePartsByName(req, res) {
+async function getLowStockSpareParts(req, res) {
     try {
-        const { name } = req.query;
-
-        if (!name) {
-            return res.status(400).json({ message: 'Se requiere un nombre para la busqueda.' })
-        }
-
-        const spareParts = await sparePartService.findSparePartByName(name);
-        res.json(spareParts);
-
+        const spareParts = await sparePartService.findSparePartBelowMinimumStock();
+        res.json({ success: true, data: spareParts });
     } catch (error) {
-        res.status(500).json({ message: 'Error interno del servidor', error: error.message })
+        const status = error.status || 500;
+        res.status(status).json({ success: false, message: error.message || 'Error interno del servidor' });
     }
 }
 
+/**
+ * Obtiene piezas sin stock
+ */
+async function getOutOfStockSpareParts(req, res) {
+    try {
+        const spareParts = await sparePartService.findSparePartOutOfStock();
+        res.json({ success: true, data: spareParts });
+    } catch (error) {
+        const status = error.status || 500;
+        res.status(status).json({ success: false, message: error.message || 'Error interno del servidor' });
+    }
+}
 
 /**
  * Obtiene una pieza específica por su ID.
- * @param {Object} req - Objeto Request de Express.
- * @param {Object} res - Objeto Response de Express.
  */
 async function getSparePartsById(req, res) {
     try {
         const { id } = req.params;
-
         const sparePart = await sparePartService.findSparePartById(id);
 
         if (!sparePart) {
-            return res.status(404).json({ message: 'La Pieza con ese ID no existe' });
+            return res.status(404).json({ success: false, message: 'La Pieza con ese ID no existe' });
         }
-        res.json(sparePart);
+        res.json({ success: true, data: sparePart });
 
     } catch (error) {
-        res.status(500).json({ message: 'Error al buscar la pieza', error: error.message })
+        const status = error.status || 500;
+        res.status(status).json({ success: false, message: error.message || 'Error al buscar la pieza' });
     }
 }
-
 
 /**
  * Crea una nueva pieza en el inventario.
- * Verifica que el código SKU no esté duplicado antes de crearla.
- * @param {Object} req - Objeto Request de Express.
- * @param {Object} res - Objeto Response de Express.
  */
 async function createSparePart(req, res) {
     try {
-        const { sku, name, current_stock, minimum_stock, unit_price } = req.body;
-
-        const existingSparePart = await sparePartService.findSparePartBySku(sku);
+        const existingSparePart = await sparePartService.findSparePartBySku(req.body.sku);
         if (existingSparePart) {
-            return res.status(400).json({ message: 'El codigo SKU ya esta registrado.' });
+            return res.status(400).json({ success: false, message: 'El código SKU ya está registrado.' });
         }
 
-        const newSparePart = await sparePartService.addSparePart({ sku, name, current_stock, minimum_stock, unit_price });
-        res.status(201).json({ message: 'Pieza registrada exitosamente', data: newSparePart });
-
+        const newSparePart = await sparePartService.addSparePart(req.body);
+        res.status(201).json({ success: true, message: 'Pieza registrada exitosamente', data: newSparePart });
 
     } catch (error) {
-        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+        const status = error.status || 500;
+        res.status(status).json({ success: false, message: error.message || 'Error interno del servidor' });
     }
 }
 
-
 /**
  * Elimina una pieza del inventario por su ID.
- * @param {Object} req - Objeto Request de Express.
- * @param {Object} res - Objeto Response de Express.
  */
 async function deleteSparePart(req, res) {
     try {
         const { id } = req.params;
-
         const sparePart = await sparePartService.findSparePartById(id);
 
         if (!sparePart) {
-            return res.status(404).json({ message: 'Esta pieza no se puede borrar ya que no existe.' })
+            return res.status(404).json({ success: false, message: 'Esta pieza no se puede borrar ya que no existe.' });
         }
 
         await sparePartService.removeSparePart(id);
-        res.status(200).json({ message: 'Pieza eliminada exitosamente del inventario.' })
-
+        res.status(200).json({ success: true, message: 'Pieza eliminada exitosamente del inventario.' });
 
     } catch (error) {
-        res.status(500).json({ message: 'Error interno del servidor', error: error.message })
+        const status = error.status || 500;
+        res.status(status).json({ success: false, message: error.message || 'Error interno del servidor' });
     }
 }
 
-
 /**
  * Actualiza los datos de una pieza existente por su ID.
- * @param {Object} req - Objeto Request de Express.
- * @param {Object} res - Objeto Response de Express.
  */
 async function updateSparePart(req, res) {
     try {
         const { id } = req.params;
-        const updatedData = req.body;
-
-        const existingSparePart = await sparePartService.findSparePartById(id);
-        if (!existingSparePart) {
-            return res.status(404).json({ message: 'La pieza no se puede modificar ya que no existe.' });
-        }
-
-        const updatedSparePart = await sparePartService.modifySparePart(id, updatedData);
-        res.status(200).json({ message: 'Pieza modificada correctamente', data: updatedSparePart });
+        const updatedSparePart = await sparePartService.modifySparePart(id, req.body);
+        res.status(200).json({ success: true, message: 'Pieza modificada correctamente', data: updatedSparePart });
 
     } catch (error) {
-        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+        const status = error.status || 500;
+        res.status(status).json({ success: false, message: error.message || 'Error interno del servidor' });
     }
 }
 
-
 /**
- * Obtiene todas las piezas registradas en el inventario.
- * @param {Object} req - Objeto Request de Express.
- * @param {Object} res - Objeto Response de Express.
+ * Obtiene todas las piezas registradas con filtros opcionales (nombre, sku).
  */
 async function getAllSparePart(req, res) {
     try {
-        const spare_part = await sparePartService.getAllSparePart();
-        res.json(spare_part);
+        const { name, sku } = req.query;
+        const spareParts = await sparePartService.getAllSparePart({ name, sku });
+        res.json({ success: true, data: spareParts });
 
     } catch (error) {
-        res.status(500).json({ message: 'Error interno del servidor', error: error.message })
+        const status = error.status || 500;
+        res.status(status).json({ success: false, message: error.message || 'Error interno del servidor' });
     }
 }
 
-
 module.exports = {
-    getSparePartsByName,
-    getSparePartsBySku,
     getSparePartsById,
     createSparePart,
     deleteSparePart,
     updateSparePart,
-    getAllSparePart
+    getAllSparePart,
+    getLowStockSpareParts,
+    getOutOfStockSpareParts
 }
-
