@@ -92,7 +92,6 @@ async function completeWorkOrder(woId, resolutionData, partsUsed = []) {
             .update({
                 status: 'closed',
                 resolution_comment: resolutionData.resolution_comment,
-                time_spent_minutes: resolutionData.time_spent_minutes,
                 closed_at: db.fn.now()
             });
 

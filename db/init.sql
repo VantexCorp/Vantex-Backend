@@ -44,7 +44,6 @@ CREATE TABLE IF NOT EXISTS work_orders (
     opened_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     started_at TIMESTAMP NULL,
     closed_at TIMESTAMP NULL,
-    time_spent_minutes INT DEFAULT 0,
     status ENUM('open', 'in_progress', 'closed') DEFAULT 'open',
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
