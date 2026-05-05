@@ -25,10 +25,6 @@ const validateCloseWorkOrder = [
         .notEmpty()
         .trim()
         .withMessage('El comentario de resolución es obligatorio'),
-        
-    body('time_spent_minutes')
-        .isInt({ min: 1 })
-        .withMessage('Debes indicar los minutos reales invertidos (mínimo 1)'),
 
     body('partsUsed')
         .optional()

@@ -78,11 +78,11 @@ async function start(req, res) {
 async function close(req, res) {
     try {
         const woId = req.params.id;
-        const { resolution_comment, time_spent_minutes, partsUsed } = req.body;
+        const { resolution_comment, partsUsed } = req.body;
 
         await workOrderService.completeWorkOrder(
             woId, 
-            { resolution_comment, time_spent_minutes }, 
+            { resolution_comment }, 
             partsUsed
         );
 
