@@ -45,3 +45,27 @@ const validateCloseWorkOrder = [
         .isInt({ min: 1 })
         .withMessage('La cantidad consumida debe ser al menos 1')
 ];
+
+const validateUpdateWorkOrder = [
+    body('machine_id')
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage('El ID de máquina debe ser un número entero válido'),
+
+    body('technician_id')
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage('El ID de técnico debe ser un número entero válido'),
+
+    body('issue_description')
+        .optional()
+        .trim()
+        .notEmpty()
+        .withMessage('La descripción del problema no puede estar vacía')
+];
+
+module.exports = { 
+    validateCreateWorkOrder, 
+    validateCloseWorkOrder,
+    validateUpdateWorkOrder
+};
