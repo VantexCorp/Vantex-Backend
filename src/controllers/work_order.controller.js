@@ -42,3 +42,33 @@ async function getById(req, res) {
         res.status(500).json({ error: 'Error al buscar la orden de trabajo' });
     }
 }
+
+/**
+ * Crea una nueva orden de trabajo.
+ */
+async function create(req, res) {
+    try {
+        const newOrder = await workOrderService.addWorkOrder(req.body);
+        res.status(201).json({
+            message: 'Orden de trabajo creada con éxito',
+            data: newOrder
+        });
+    } catch (error) {
+        console.error('[WorkOrderCtrl - create] Error:', error);
+        res.status(500).json({ error: 'Error al crear la orden de trabajo' });
+    }
+}
+
+/**
+ * Inicia una orden de trabajo.
+ */
+async function start(req, res) {
+    try {
+        await workOrderService.startWorkOrder(req.params.id);
+        res.json({ message: 'Orden iniciada correctamente. El tiempo está corriendo.' });
+    } catch (error) {
+        console.error('[WorkOrderCtrl - start] Error:', error);
+        res.status(500).json({ error: 'Error al iniciar la orden' });
+    }
+}
+
