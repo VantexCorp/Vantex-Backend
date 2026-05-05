@@ -1,6 +1,5 @@
 /**
- * @file spare_part.route.js
- * @description Definición de rutas para la gestión de repuestos (Spare Parts).
+ * @file Rutas para el CRUD de repuestos (Spare Parts).
  * @module routes/spare_part
  */
 
@@ -9,60 +8,31 @@ const router = express.Router();
 const sparePartController = require('../controllers/spare_part.controller');
 const {
     validateCreateSparePart,
-    validateUpdateSparePart,
-    validateNameSearch,
-    validateSkuSearch,
-    validateIdParam
+    validateUpdateSparePart
 } = require('../validators/spare_part.validator');
 const { handleValidationErrors } = require('../middlewares/error.middleware');
+const { authenticateToken, authorizeRoles } = require('../middlewares/auth.middleware');
+const { validateIdParam } = require('../validators/common.validator');
 
+// GET /api/spare-parts -> Obtener lista completa o filtrar (Público)
+router.get('/',authenticateToken, sparePartController.getAllSparePart);
 
-/**
- * @route GET /name
- * @description Busca repuestos filtrando por nombre.
- * @access Public
- */
-router.get('/name', validateNameSearch, sparePartController.getSparePartsByName);
+// GET /api/spare-parts/stock/low -> Alertas de stock bajo (Cualquier rol autenticado)
+router.get('/stock/low', authenticateToken, sparePartController.getLowStockSpareParts);
 
-/**
- * @route GET /sku
- * @description Busca repuestos filtrando por SKU.
- * @access Public
- */
-router.get('/sku', validateSkuSearch, sparePartController.getSparePartsBySku);
+// GET /api/spare-parts/stock/out -> Alertas de stock agotado (Cualquier rol autenticado)
+router.get('/stock/out', authenticateToken, sparePartController.getOutOfStockSpareParts);
 
-/**
- * @route GET /:id
- * @description Obtiene el detalle de un repuesto específico por su ID.
- * @param {string} id.path.required - ID único del repuesto.
- */
-router.get('/:id', validateIdParam, sparePartController.getSparePartsById);
-
-/**
- * @route POST /
- * @description Crea un nuevo registro de repuesto en el sistema.
- * @body {Object} sparePart - Datos del repuesto a crear.
- */
+// POST /api/spare-parts -> Crear repuesto (Solo Admin o Manager)
 router.post('/', authenticateToken, authorizeRoles('admin', 'maintenance_manager'), validateCreateSparePart, handleValidationErrors, sparePartController.createSparePart);
 
-/**
- * @route PUT /:id
- * @description Actualiza un repuesto existente identificado por su ID.
- * @param {string} id.path.required - ID del repuesto a modificar.
- */
-router.put('/:id', authenticateToken, authorizeRoles('admin', 'maintenance_manager'), validateUpdateSparePart, handleValidationErrors, sparePartController.updateSparePart);
+// PUT /api/spare-parts/:id -> Actualizar repuesto (Solo Admin o Manager)
+router.put('/:id', authenticateToken, authorizeRoles('admin', 'maintenance_manager'), validateIdParam, validateUpdateSparePart, handleValidationErrors, sparePartController.updateSparePart);
 
-/**
- * @route DELETE /:id
- * @description Elimina un registro de repuesto del sistema por su ID.
- * @param {string} id.path.required - ID del repuesto a eliminar.
- */
-router.delete('/:id', authenticateToken, authorizeRoles('admin'), sparePartController.deleteSparePart);
+// DELETE /api/spare-parts/:id -> Eliminar repuesto (Solo Admin)
+router.delete('/:id', authenticateToken, authorizeRoles('admin'), validateIdParam, handleValidationErrors, sparePartController.deleteSparePart);
 
-/**
- * @route GET /spare-parts
- * @description Obtiene la lista completa de todos los repuestos registrados.
- */
-router.get('/', sparePartController.getAllSparePart);
+// GET /api/spare-parts/:id -> Detalle específico (Público)
+router.get('/:id',authenticateToken, validateIdParam, handleValidationErrors, sparePartController.getSparePartsById);
 
 module.exports = router;
