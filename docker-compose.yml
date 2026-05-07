@@ -1,0 +1,15 @@
+services:
+  db:
+    image: mariadb
+    container_name: vantex_db
+    restart: always
+    env_file: .env
+    ports: ["3306:3306"]
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./db/procedure.sql:/docker-entrypoint-initdb.d/02-procedure.sql
+      - ./db/seed.sql:/docker-entrypoint-initdb.d/03-seed.sql
+      - vantex_db_data:/var/lib/mysql
+
+volumes:
+  vantex_db_data:
