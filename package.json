@@ -1,0 +1,38 @@
+{
+  "name": "vantex-backend",
+  "version": "1.0.0",
+  "description": "Backend API para VantexCorp - Sistema CMMS de gestión de mantenimiento",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js --env-file=.env",
+    "test": "node --env-file=.env node_modules/jest/bin/jest.js"
+  },
+  "keywords": [
+    "mantenimiento",
+    "cmms",
+    "industria",
+    "api"
+  ],
+  "author": "VantexCorp Team",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^5.1.0",
+    "express-validator": "^7.3.1",
+    "js-yaml": "^4.1.1",
+    "jsonwebtoken": "^9.0.3",
+    "knex": "^3.1.0",
+    "mysql2": "^3.16.3",
+    "node-cron": "^4.2.1",
+    "sqlite3": "^5.1.7",
+    "yargs": "^18.0.0"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
+  }
+}
