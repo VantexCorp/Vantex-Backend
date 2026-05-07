@@ -30,9 +30,7 @@ app.use((req, res) => {
 
 module.exports = app;
 
-if (!process.env.JEST_WORKER_ID && process.env.NODE_ENV !== 'test') {
-    initCronJobs(); 
-    app.listen(PORT, () => {
-        console.log(`Servidor corriendo en el puerto '${PORT}'`);
-    });
-}
+require.main === module && app.listen(PORT, () => {
+    initCronJobs();
+    console.log(`Servidor en puerto ${PORT}`);
+});
