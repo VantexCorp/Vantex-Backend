@@ -1,15 +1,28 @@
 services:
   db:
-    image: mariadb
+    image: mariadb:lts
     container_name: vantex_db
     restart: always
     env_file: .env
-    ports: ["3306:3306"]
+    ports: 
+      - "3306:3306"
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql
       - ./db/procedure.sql:/docker-entrypoint-initdb.d/02-procedure.sql
       - ./db/seed.sql:/docker-entrypoint-initdb.d/03-seed.sql
       - vantex_db_data:/var/lib/mysql
+
+  api:
+    build: .
+    container_name: vantex_api
+    restart: always
+    env_file: .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_HOST=db
 
 volumes:
   vantex_db_data:
