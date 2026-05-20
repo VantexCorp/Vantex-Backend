@@ -19,14 +19,18 @@ describe('Integration Test - Spare Parts API', () => {
             email: testUser.email,
             password_hash: hashedPassword,
             full_name: 'Parts Tester',
-            role: testUser.role
+            role: testUser.role,
+            is_active: 1
         });
 
         const loginRes = await request(app)
             .post('/api/auth/login')
             .send({ email: testUser.email, password: testUser.password });
         
-        token = loginRes.body.data.token;
+        if (!loginRes.body.data || !loginRes.body.data.token) {
+            console.error('Login failed in beforeAll:', loginRes.body);
+        }
+        token = loginRes.body.data ? loginRes.body.data.token : null;
 
         await db('spare_parts').where('sku', 'like', 'TEST-%').del();
     });
