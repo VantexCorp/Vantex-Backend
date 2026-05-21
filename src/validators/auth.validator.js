@@ -7,7 +7,7 @@ const validateRegister = [
     .trim(),
   body('email')
     .isEmail()
-    .withMessage('Debe ser un email válido.')
+    .withMessage('Must be a valid email.')
     .normalizeEmail(),
   body('password')
     .isLength({ min: 6 })
@@ -15,7 +15,7 @@ const validateRegister = [
   body('role')
     .optional()
     .isIn(['admin', 'maintenance_manager', 'technician'])
-    .withMessage('Rol no válido.')
+    .withMessage('Invalid role.')
 ];
 
 const validateLogin = [
@@ -32,43 +32,43 @@ const validateUpdateProfile = [
   body('full_name')
     .optional()
     .notEmpty()
-    .withMessage('El nombre no puede estar vacío.')
+    .withMessage('Name cannot be empty.')
     .trim(),
   body('email')
     .optional()
     .isEmail()
-    .withMessage('Debe ser un email válido.')
+    .withMessage('Must be a valid email.')
     .normalizeEmail()
 ];
 
 const validateUpdatePassword = [
   body('currentPassword')
     .notEmpty()
-    .withMessage('La contraseña actual es obligatoria.'),
+    .withMessage('Current password is required.'),
   body('newPassword')
     .isLength({ min: 6 })
-    .withMessage('La nueva contraseña debe tener al menos 6 caracteres.')
+    .withMessage('New password must have at least 6 characters.')
 ];
 
 const validateUpdateUserByAdmin = [
   body('full_name')
     .optional()
     .notEmpty()
-    .withMessage('El nombre no puede estar vacío.')
+    .withMessage('Name cannot be empty.')
     .trim(),
   body('email')
     .optional()
     .isEmail()
-    .withMessage('Debe ser un email válido.')
+    .withMessage('Must be a valid email.')
     .normalizeEmail(),
   body('is_active')
     .optional()
     .isBoolean()
-    .withMessage('El estado activo debe ser booleano (true/false).'),
+    .withMessage('Active state must be a boolean (true/false).'),
   body('role')
     .optional()
     .isIn(['admin', 'maintenance_manager', 'technician'])
-    .withMessage('Rol no válido.')
+    .withMessage('Invalid role.')
 ];
 
 module.exports = { 

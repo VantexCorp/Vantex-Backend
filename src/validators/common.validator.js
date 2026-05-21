@@ -3,9 +3,9 @@ const { param } = require('express-validator');
 const validateIdParam = [
     param('id')
         .notEmpty()
-        .withMessage('El ID en la URL es obligatorio')
+        .withMessage('The ID in the URL is required')
         .isInt()
-        .withMessage('El ID debe ser un número entero válido')
+        .withMessage('The ID must be a valid integer')
 ];
 
 module.exports = {

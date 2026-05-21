@@ -22,7 +22,7 @@ async function getAll(req, res) {
         res.json(orders);
     } catch (error) {
         console.error('[WorkOrderCtrl - getAll] Error:', error);
-        res.status(500).json({ error: 'Error interno al obtener las órdenes de trabajo' });
+        res.status(500).json({ error: 'Internal error fetching work orders' });
     }
 }
 
@@ -33,13 +33,13 @@ async function getById(req, res) {
     try {
         const order = await workOrderService.findWorkOrderById(req.params.id);
         if (!order) {
-            return res.status(404).json({ error: 'Orden de trabajo no encontrada' });
+            return res.status(404).json({ error: 'Work order not found' });
         }
         
         res.json(order);
     } catch (error) {
         console.error('[WorkOrderCtrl - getById] Error:', error);
-        res.status(500).json({ error: 'Error al buscar la orden de trabajo' });
+        res.status(500).json({ error: 'Error searching for work order' });
     }
 }
 
@@ -50,12 +50,12 @@ async function create(req, res) {
     try {
         const newOrder = await workOrderService.addWorkOrder(req.body);
         res.status(201).json({
-            message: 'Orden de trabajo creada con éxito',
+            message: 'Work order created successfully',
             data: newOrder
         });
     } catch (error) {
         console.error('[WorkOrderCtrl - create] Error:', error);
-        res.status(500).json({ error: 'Error al crear la orden de trabajo' });
+        res.status(500).json({ error: 'Error creating work order' });
     }
 }
 
@@ -68,7 +68,7 @@ async function start(req, res) {
         res.json({ message: 'Orden iniciada correctamente. El tiempo está corriendo.' });
     } catch (error) {
         console.error('[WorkOrderCtrl - start] Error:', error);
-        res.status(500).json({ error: 'Error al iniciar la orden' });
+        res.status(500).json({ error: 'Error starting order' });
     }
 }
 
@@ -118,12 +118,12 @@ async function remove(req, res) {
     try {
         const order = await workOrderService.findWorkOrderById(req.params.id);
         if (!order) {
-            return res.status(404).json({ error: 'Orden de trabajo no encontrada' });
+            return res.status(404).json({ error: 'Work order not found' });
         }
         
         if (order.status !== 'open') {
             return res.status(400).json({ 
-                error: 'No se puede eliminar una orden que ya ha sido iniciada o cerrada. Para evitar descuadres de inventario, debes cancelarla.' 
+                error: 'Cannot delete an order that has already been started or closed. To avoid inventory imbalances, you must cancel it.' 
             });
         }
 
@@ -131,7 +131,7 @@ async function remove(req, res) {
         res.json({ message: 'Orden de trabajo eliminada correctamente' });
     } catch (error) {
         console.error('[WorkOrderCtrl - delete] Error:', error);
-        res.status(500).json({ error: 'Error al eliminar la orden de trabajo' });
+        res.status(500).json({ error: 'Error deleting work order' });
     }
 }
 

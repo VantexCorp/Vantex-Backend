@@ -8,56 +8,56 @@ const { body } = require('express-validator');
 const validateCreateWorkOrder = [
     body('machine_id')
         .isInt({ min: 1 })
-        .withMessage('El ID de máquina debe ser un número entero válido'),
+        .withMessage('Machine ID must be a valid integer'),
 
     body('technician_id')
         .isInt({ min: 1 })
-        .withMessage('El ID de técnico debe ser un número entero válido'),
+        .withMessage('Technician ID must be a valid integer'),
 
     body('issue_description')
         .notEmpty()
         .trim()
-        .withMessage('La descripción del problema es obligatoria')
+        .withMessage('Problem description is required')
 ];
 
 const validateCloseWorkOrder = [
     body('resolution_comment')
         .notEmpty()
         .trim()
-        .withMessage('El comentario de resolución es obligatorio'),
+        .withMessage('Resolution comment is required'),
 
     body('partsUsed')
         .optional()
         .isArray()
-        .withMessage('Los materiales consumidos deben enviarse como una lista (Array)'),
+        .withMessage('Consumed materials must be sent as an Array'),
 
     body('partsUsed.*.id_part')
         .optional()
         .isInt({ min: 1 })
-        .withMessage('El ID del repuesto no es válido'),
+        .withMessage('Spare part ID is invalid'),
 
     body('partsUsed.*.quantity_used')
         .optional()
         .isInt({ min: 1 })
-        .withMessage('La cantidad consumida debe ser al menos 1')
+        .withMessage('Consumed quantity must be at least 1')
 ];
 
 const validateUpdateWorkOrder = [
     body('machine_id')
         .optional()
         .isInt({ min: 1 })
-        .withMessage('El ID de máquina debe ser un número entero válido'),
+        .withMessage('Machine ID must be a valid integer'),
 
     body('technician_id')
         .optional()
         .isInt({ min: 1 })
-        .withMessage('El ID de técnico debe ser un número entero válido'),
+        .withMessage('Technician ID must be a valid integer'),
 
     body('issue_description')
         .optional()
         .trim()
         .notEmpty()
-        .withMessage('La descripción del problema no puede estar vacía')
+        .withMessage('Problem description cannot be empty')
 ];
 
 module.exports = { 

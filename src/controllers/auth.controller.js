@@ -8,7 +8,7 @@ const getMe = async (req, res) => {
             data: { id: req.user.id, email: req.user.email, role: req.user.role }
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: "Error al obtener perfil" });
+        res.status(500).json({ success: false, message: "Error fetching profile" });
     }
 };
 
@@ -17,7 +17,7 @@ const getUserById = async (req, res) => {
         const user = await authService.findUserById(req.params.id);
         
         if (!user) {
-            return res.status(404).json({ success: false, message: "Usuario no encontrado" });
+            return res.status(404).json({ success: false, message: "User not found" });
         }
         
         res.json({ success: true, data: user });
@@ -31,7 +31,7 @@ async function registerUser(req, res) {
   try {
     const { email, password, full_name } = req.body;
     const result = await authService.register(email, password, full_name, 'technician');
-    res.status(201).json({ success: true, message: "Usuario registrado", data: result });
+    res.status(201).json({ success: true, message: "User registered", data: result });
   } catch (error) {
     const status = error.status || 500;
     res.status(status).json({ success: false, message: error.message || "Error al registrar" });
@@ -42,7 +42,7 @@ async function loginUser(req, res) {
   try {
     const { email, password } = req.body;
     const result = await authService.login(email, password);
-    res.status(200).json({ success: true, message: "Login exitoso", data: result });
+    res.status(200).json({ success: true, message: "Login successful", data: result });
   } catch (error) {
     const status = error.status || 500;
     res.status(status).json({ success: false, message: error.message || "Error en el login" });

@@ -11,27 +11,27 @@ const { body } = require('express-validator');
 const validateCreateMachine = [
     body('asset_code')
         .notEmpty()
-        .withMessage('El código de activo (asset_code) es obligatorio.')
+        .withMessage('Asset code (asset_code) is required.')
         .isString()
-        .withMessage('El código debe ser texto.'),
+        .withMessage('Code must be text.'),
         
     body('name')
         .notEmpty()
-        .withMessage('El nombre de la máquina es obligatorio.'),
+        .withMessage('Machine name is required.'),
         
     body('location')
         .notEmpty()
-        .withMessage('La ubicación es obligatoria.'),
+        .withMessage('Location is required.'),
         
     body('status')
         .optional() 
         .isIn(['operational', 'broken', 'maintenance'])
-        .withMessage('Estado de máquina no válido.'),
+        .withMessage('Invalid machine state.'),
         
     body('downtime_hourly_cost')
         .optional()
         .isFloat({ min: 0 })
-        .withMessage('El coste por hora debe ser un número positivo.')
+        .withMessage('Hourly cost must be a positive number.')
 ];
 
 /**
@@ -41,27 +41,27 @@ const validateUpdateMachine = [
     body('status')
         .optional()
         .isIn(['operational', 'broken', 'maintenance'])
-        .withMessage('Estado de máquina no válido.'),
+        .withMessage('Invalid machine state.'),
         
     body('downtime_hourly_cost')
         .optional()
         .isFloat({ min: 0 })
-        .withMessage('El coste por hora debe ser un número positivo.'),
+        .withMessage('Hourly cost must be a positive number.'),
         
     body('name')
         .optional()
         .notEmpty()
-        .withMessage('El nombre no puede estar vacío si se envía.'),
+        .withMessage('Name cannot be empty if sent.'),
         
     body('location')
         .optional()
         .notEmpty()
-        .withMessage('La ubicación no puede estar vacía si se envía.'),
+        .withMessage('Location cannot be empty if sent.'),
         
     body('asset_code')
         .optional()
         .notEmpty()
-        .withMessage('El código no puede estar vacío si se envía.')
+        .withMessage('Code cannot be empty if sent.')
 ];
 
 module.exports = {
