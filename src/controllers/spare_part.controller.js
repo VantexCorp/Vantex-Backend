@@ -40,7 +40,7 @@ async function getSparePartsById(req, res) {
         const sparePart = await sparePartService.findSparePartById(id);
 
         if (!sparePart) {
-            return res.status(404).json({ success: false, message: 'La Pieza con ese ID no existe' });
+            return res.status(404).json({ success: false, message: 'Spare part with this ID does not exist' });
         }
         res.json({ success: true, data: sparePart });
 
@@ -57,11 +57,11 @@ async function createSparePart(req, res) {
     try {
         const existingSparePart = await sparePartService.findSparePartBySku(req.body.sku);
         if (existingSparePart) {
-            return res.status(400).json({ success: false, message: 'El código SKU ya está registrado.' });
+            return res.status(400).json({ success: false, message: 'SKU code is already registered.' });
         }
 
         const newSparePart = await sparePartService.addSparePart(req.body);
-        res.status(201).json({ success: true, message: 'Pieza registrada exitosamente', data: newSparePart });
+        res.status(201).json({ success: true, message: 'Spare part registered successfully', data: newSparePart });
 
     } catch (error) {
         const status = error.status || 500;
@@ -78,11 +78,11 @@ async function deleteSparePart(req, res) {
         const sparePart = await sparePartService.findSparePartById(id);
 
         if (!sparePart) {
-            return res.status(404).json({ success: false, message: 'Esta pieza no se puede borrar ya que no existe.' });
+            return res.status(404).json({ success: false, message: 'This spare part cannot be deleted as it does not exist.' });
         }
 
         await sparePartService.removeSparePart(id);
-        res.status(200).json({ success: true, message: 'Pieza eliminada exitosamente del inventario.' });
+        res.status(200).json({ success: true, message: 'Spare part successfully removed from inventory.' });
 
     } catch (error) {
         const status = error.status || 500;
@@ -97,7 +97,7 @@ async function updateSparePart(req, res) {
     try {
         const { id } = req.params;
         const updatedSparePart = await sparePartService.modifySparePart(id, req.body);
-        res.status(200).json({ success: true, message: 'Pieza modificada correctamente', data: updatedSparePart });
+        res.status(200).json({ success: true, message: 'Spare part modified successfully', data: updatedSparePart });
 
     } catch (error) {
         const status = error.status || 500;

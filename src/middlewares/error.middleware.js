@@ -9,7 +9,7 @@ const handleValidationErrors = (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ 
       success: false, 
-      message: "Errores de validación en la petición",
+      message: "Validation errors in request",
       errors: errors.array() 
     });
   }

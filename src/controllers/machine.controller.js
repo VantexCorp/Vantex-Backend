@@ -14,7 +14,7 @@ async function getAllMachines(req, res) {
     const machines = await machineService.findAllMachines(location, status);
     res.json({ success: true, data: machines });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error al obtener máquinas" });
+    res.status(500).json({ success: false, message: "Error fetching machines" });
   }
 }
 
@@ -28,7 +28,7 @@ async function getMachineStats(req, res) {
     const maintenance = await machineService.countMachinesByStatus('maintenance');
     res.json({ success: true, data: { operational, broken, maintenance } });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error al obtener estadísticas" });
+    res.status(500).json({ success: false, message: "Error fetching statistics" });
   }
 }
 
@@ -39,11 +39,11 @@ async function getMachineById(req, res) {
   try {
     const machine = await machineService.findMachineById(req.params.id);
     if (!machine) {
-      return res.status(404).json({ success: false, message: "Máquina no encontrada" });
+      return res.status(404).json({ success: false, message: "Machine not found" });
     }
     res.json({ success: true, data: machine });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error en el servidor" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 }
 
@@ -54,7 +54,7 @@ async function createMachine(req, res) {
   try {
     const existing = await machineService.findMachineByAssetCode(req.body.asset_code);
     if (existing) {
-      return res.status(400).json({ success: false, message: "El código de activo ya existe" });
+      return res.status(400).json({ success: false, message: "Asset code already exists" });
     }
 
     const newMachine = await machineService.addMachine(req.body);

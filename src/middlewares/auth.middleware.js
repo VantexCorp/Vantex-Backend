@@ -8,7 +8,7 @@ const authenticateToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ success: false, message: "Acceso denegado. Token no proporcionado." });
+    return res.status(401).json({ success: false, message: "Access denied. Token not provided." });
   }
 
   // 2. Extraemos solo la parte del token
@@ -22,7 +22,7 @@ const authenticateToken = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    return res.status(401).json({ success: false, message: "Token inválido o expirado." });
+    return res.status(401).json({ success: false, message: "Invalid or expired token." });
   }
 };
 
@@ -34,13 +34,13 @@ const authenticateToken = (req, res, next) => {
 const authorizeRoles = (...allowedRoles) => {
   return (req, res, next) => {
     if (!req.user || !req.user.role) {
-      return res.status(403).json({ success: false, message: "Acceso denegado. Rol no identificado." });
+      return res.status(403).json({ success: false, message: "Access denied. Unidentified role." });
     }
     
     if (!allowedRoles.includes(req.user.role)) {
       return res.status(403).json({ 
         success: false, 
-        message: `Acceso denegado. Se requiere uno de los siguientes roles: ${allowedRoles.join(', ')}` 
+        message: `Access denied. One of the following roles is required: ${allowedRoles.join(', ')}` 
       });
     }
     

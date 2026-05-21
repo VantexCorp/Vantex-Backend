@@ -84,7 +84,7 @@ async function modifyUser(id, updateData) {
     
     const updatedRows = await db('users').where({ id }).update(safeData);
     if (updatedRows === 0) {
-        throw { status: 404, message: "Usuario no encontrado" };
+        throw { status: 404, message: "User not found" };
     }
     
     return await findUserById(id);
@@ -118,7 +118,7 @@ async function modifyUserByAdmin(id, updateData) {
     
     const updatedRows = await db('users').where({ id }).update(safeData);
     if (updatedRows === 0) {
-        throw { status: 404, message: "Usuario no encontrado" };
+        throw { status: 404, message: "User not found" };
     }
     
     return await findUserById(id);
@@ -129,7 +129,7 @@ async function modifyUserByAdmin(id, updateData) {
  */
 async function changePassword(userId, currentPassword, newPassword) {
     const user = await db("users").where({ id: userId }).first();
-    if (!user) throw { status: 404, message: "Usuario no encontrado" };
+    if (!user) throw { status: 404, message: "User not found" };
 
     const isPasswordValid = await comparePassword(currentPassword, user.password_hash);
     if (!isPasswordValid) throw { status: 401, message: "Contraseña actual incorrecta" };
