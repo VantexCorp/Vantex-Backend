@@ -1,1423 +1,1423 @@
 {
-  "info": {
-    "_postman_id": "1c5b4bcb-6b65-4851-9c10-f573efec053e",
-    "name": "VantexCorp API",
-    "description": "Colección de endpoints para el backend de VantexCorp (Micro-CMMS).",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "49087911",
-    "_collection_link": "https://go.postman.co/collection/49087911-1c5b4bcb-6b65-4851-9c10-f573efec053e?source=collection_link"
-  },
-  "item": [
-    {
-      "name": "Auth",
-      "item": [
-        {
-          "name": "Register User",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"full_name\": \"John Doe\",\n  \"email\": \"john@vantexcorp.com\",\n  \"password\": \"123456\",\n  \"role\": \"technician\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/auth/register",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "auth",
-                "register"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Login User",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const response = pm.response.json();",
-                  "if (response && response.data && response.data.token) {",
-                  "    pm.collectionVariables.set(\"token\", response.data.token);",
-                  "    console.log(\"Token guardado automáticamente en variables.\");",
-                  "}"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@vantexcorp.com\",\n  \"password\": \"123456\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/auth/login",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "auth",
-                "login"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Profile (Me)",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/auth/me",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "auth",
-                "me"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update Profile",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"full_name\": \"John Doe Updated\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/auth/users/update/profile",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "auth",
-                "users",
-                "update",
-                "profile"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update Password",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"currentPassword\": \"123456\",\n  \"newPassword\": \"newpassword123\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/auth/users/update/password",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "auth",
-                "users",
-                "update",
-                "password"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get All Users",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/auth/users",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "auth",
-                "users"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get User by ID",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/auth/users/1",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "auth",
-                "users",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update User by Admin",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"role\": \"maintenance_manager\",\n  \"is_active\": true\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/auth/users/update/1",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "auth",
-                "users",
-                "update",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Machines",
-      "item": [
-        {
-          "name": "Get All Machines",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/machines",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "machines"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Machine Stats",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/machines/stats/all",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "machines",
-                "stats",
-                "all"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Machine by ID",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/machines/1",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "machines",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create Machine",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code es 201 Created o 200\", function () {\r",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"La máquina se ha creado correctamente\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    var inspectData = jsonData.data ? jsonData.data : jsonData;\r",
-                  "    var enviadoEnBody = JSON.parse(pm.request.body.raw);\r",
-                  "    \r",
-                  "    pm.expect(inspectData.asset_code).to.eql(enviadoEnBody.asset_code);\r",
-                  "    \r",
-                  "    if (inspectData.id) {\r",
-                  "        pm.collectionVariables.set(\"machineId\", inspectData.id);\r",
-                  "    }\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"asset_code\": \"MAC-NINJA-001\",\n  \"name\": \"Brazo Robótico Ensamblador\",\n  \"location\": \"Línea de Montaje Principal\",\n  \"status\": \"operational\",\n  \"downtime_hourly_cost\": 120.75\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/machines",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "machines"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create Machine - ERROR",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code es 400 Bad Request\", function () {\r",
-                  "    pm.response.to.have.status(400);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"El servidor avisa que el código ya existe o que el body es inválido\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    \r",
-                  "    pm.expect(jsonData.success).to.be.false;\r",
-                  "    \r",
-                  "    pm.expect(jsonData.message).to.be.a('string');\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"asset_code\": \"MAC-NINJA-001\",\n  \"name\": \"Brazo Robótico Falso\",\n  \"location\": \"Línea de Montaje Secundaria\",\n  \"status\": \"maintenance\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/machines",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "machines"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update Machine",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code es 200 OK\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"La máquina se ha modificado correctamente en la base de datos\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    var inspectData = jsonData.data ? jsonData.data : jsonData;\r",
-                  "    var enviadoEnBody = JSON.parse(pm.request.body.raw);\r",
-                  "    \r",
-                  "    if (enviadoEnBody.name) {\r",
-                  "        pm.expect(inspectData.name).to.eql(enviadoEnBody.name);\r",
-                  "    }\r",
-                  "    \r",
-                  "    if (enviadoEnBody.status) {\r",
-                  "        pm.expect(inspectData.status).to.eql(enviadoEnBody.status);\r",
-                  "    }\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Brazo Robótico Ensamblador v2\",\n  \"status\": \"maintenance\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/machines/{{machineId}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "machines",
-                "{{machineId}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update Machine - ERROR",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code es 404 Not Found\", function () {\r",
-                  "    pm.response.to.have.status(404);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"El mensaje avisa que la máquina no fue encontrada\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    \r",
-                  "    pm.expect(jsonData.success).to.be.false;\r",
-                  "    pm.expect(jsonData.message).to.include(\"no encontrada\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Intento de actualización\",\n  \"status\": \"maintenance\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/machines/9999",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "machines",
-                "9999"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete Machine",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Se elimina la máquina con éxito o ya estaba eliminada\", function () {\r",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204, 404]);\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/machines/{{machineId}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "machines",
-                "{{machineId}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete Machine - ERROR",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code es 404 Not Found\", function () {\r",
-                  "    pm.response.to.have.status(404);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"El mensaje avisa que la máquina no fue encontrada\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    \r",
-                  "    pm.expect(jsonData.success).to.be.false;\r",
-                  "    pm.expect(jsonData.message).to.include(\"no encontrada\");\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/machines/99999",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "machines",
-                "99999"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Spare Parts",
-      "item": [
-        {
-          "name": "Get All Spare Parts",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/spare-parts",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "spare-parts"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Spare Part by ID",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/spare-parts/1",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "spare-parts",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Low Stock",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/spare-parts/stock/low",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "spare-parts",
-                "stock",
-                "low"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Out of Stock",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/spare-parts/stock/out",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "spare-parts",
-                "stock",
-                "out"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create Spare Part",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code es 201 Created o 200\", function () {\r",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"El repuesto se ha creado correctamente y guardamos el ID\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    var inspectData = jsonData.data ? jsonData.data : jsonData;\r",
-                  "    var enviadoEnBody = JSON.parse(pm.request.body.raw);\r",
-                  "    \r",
-                  "    pm.expect(inspectData.sku).to.eql(enviadoEnBody.sku);\r",
-                  "    \r",
-                  "    if (inspectData.id) {\r",
-                  "        pm.collectionVariables.set(\"sparePartId\", inspectData.id);\r",
-                  "    }\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"sku\": \"REP-PRO-001\",\n  \"name\": \"Rodamiento de prueba Postman\",\n  \"current_stock\": 10,\n  \"minimum_stock\": 5,\n  \"unit_price\": 25.50\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/spare-parts",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "spare-parts"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create Spare Part  - ERROR",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code es 400 Bad Request\", function () {\r",
-                  "    pm.response.to.have.status(400);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"El servidor avisa que el SKU ya está registrado\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.success).to.be.false;\r",
-                  "    pm.expect(jsonData.message).to.match(/SKU code is already registered/i);\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"sku\": \"REP-PRO-001\",\n  \"name\": \"Rodamiento Duplicado\",\n  \"current_stock\": 1,\n  \"minimum_stock\": 1,\n  \"unit_price\": 10\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/spare-parts",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "spare-parts"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update Spare Part",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code es 200 OK\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"El repuesto se ha modificado correctamente\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    var inspectData = jsonData.data ? jsonData.data : jsonData;\r",
-                  "    var enviadoEnBody = JSON.parse(pm.request.body.raw);\r",
-                  "    \r",
-                  "    pm.expect(jsonData.success).to.be.true;\r",
-                  "    \r",
-                  "    if (enviadoEnBody.name) {\r",
-                  "        pm.expect(inspectData.name).to.eql(enviadoEnBody.name);\r",
-                  "    }\r",
-                  "    if (enviadoEnBody.unit_price) {\r",
-                  "        pm.expect(Number(inspectData.unit_price)).to.eql(Number(enviadoEnBody.unit_price));\r",
-                  "    }\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Rodamiento de prueba Postman v2\",\n  \"unit_price\": 35.50\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/spare-parts/{{sparePartId}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "spare-parts",
-                "{{sparePartId}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update Spare Part - ERROR",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code es 404 Not Found\", function () {\r",
-                  "    pm.response.to.have.status(404);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"El servidor indica que no tuvo éxito\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.success).to.be.false;\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Parte fantasma\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/spare-parts/99999",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "spare-parts",
-                "99999"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete Spare Part",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code es 200 OK\", function () {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Se elimina el repuesto con éxito\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.success).to.be.true;\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/spare-parts/{{sparePartId}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "spare-parts",
-                "{{sparePartId}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete Spare Part - ERROR",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status code es 404 Not Found\", function () {\r",
-                  "    pm.response.to.have.status(404);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"El servidor indica que no se encontró el repuesto\", function () {\r",
-                  "    var jsonData = pm.response.json();\r",
-                  "    pm.expect(jsonData.success).to.be.false;\r",
-                  "});"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/spare-parts/99999",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "spare-parts",
-                "99999"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Work Orders",
-      "item": [
-        {
-          "name": "Get All Work Orders",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/work-orders",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "work-orders"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Work Order by ID",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/work-orders/1",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "work-orders",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create Work Order",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"machine_id\": 1,\n  \"technician_id\": 3,\n  \"issue_description\": \"Problema detectado en la máquina.\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/work-orders",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "work-orders"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Start Work Order",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/work-orders/1/start",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "work-orders",
-                "1",
-                "start"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Close Work Order",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"resolution_comment\": \"Reparación completada exitosamente.\",\n  \"partsUsed\": [\n    {\n      \"id_part\": 1,\n      \"quantity_used\": 2\n    }\n  ]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/work-orders/1/close",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "work-orders",
-                "1",
-                "close"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update Work Order",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"issue_description\": \"Actualización de la descripción del problema.\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/work-orders/1",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "work-orders",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete Work Order",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/work-orders/1",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "work-orders",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    }
-  ],
-  "variable": [
-    {
-      "key": "base_url",
-      "value": "http://localhost:3000/api"
-    },
-    {
-      "key": "token",
-      "value": ""
-    },
-    {
-      "key": "machineId",
-      "value": ""
-    },
-    {
-      "key": "sparePartId",
-      "value": ""
-    }
-  ]
+	"info": {
+		"_postman_id": "1c5b4bcb-6b65-4851-9c10-f573efec053e",
+		"name": "VantexCorp API",
+		"description": "Colección de endpoints para el backend de VantexCorp (Micro-CMMS).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49087911",
+		"_collection_link": "https://go.postman.co/collection/49087911-1c5b4bcb-6b65-4851-9c10-f573efec053e?source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"full_name\": \"John Doe\",\n  \"email\": \"john@vantexcorp.com\",\n  \"password\": \"123456\",\n  \"role\": \"technician\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"if (response && response.data && response.data.token) {",
+									"    pm.collectionVariables.set(\"token\", response.data.token);",
+									"    console.log(\"Token guardado automáticamente en variables.\");",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@vantexcorp.com\",\n  \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile (Me)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"full_name\": \"John Doe Updated\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/users/update/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								"update",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"currentPassword\": \"123456\",\n  \"newPassword\": \"newpassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/users/update/password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								"update",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/users/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User by Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"role\": \"maintenance_manager\",\n  \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/users/update/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Machines",
+			"item": [
+				{
+					"name": "Get All Machines",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/machines",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"machines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Machine Stats",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/machines/stats/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"machines",
+								"stats",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Machine by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/machines/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"machines",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Machine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code es 201 Created o 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La máquina se ha creado correctamente\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var inspectData = jsonData.data ? jsonData.data : jsonData;\r",
+									"    var enviadoEnBody = JSON.parse(pm.request.body.raw);\r",
+									"    \r",
+									"    pm.expect(inspectData.asset_code).to.eql(enviadoEnBody.asset_code);\r",
+									"    \r",
+									"    if (inspectData.id) {\r",
+									"        pm.collectionVariables.set(\"machineId\", inspectData.id);\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"asset_code\": \"MAC-NINJA-001\",\n  \"name\": \"Brazo Robótico Ensamblador\",\n  \"location\": \"Línea de Montaje Principal\",\n  \"status\": \"operational\",\n  \"downtime_hourly_cost\": 120.75\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/machines",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"machines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Machine - ERROR",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code es 400 Bad Request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El servidor avisa que el código ya existe o que el body es inválido\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.success).to.be.false;\r",
+									"    \r",
+									"    pm.expect(jsonData.message).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"asset_code\": \"MAC-NINJA-001\",\n  \"name\": \"Brazo Robótico Falso\",\n  \"location\": \"Línea de Montaje Secundaria\",\n  \"status\": \"maintenance\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/machines",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"machines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Machine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code es 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La máquina se ha modificado correctamente en la base de datos\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var inspectData = jsonData.data ? jsonData.data : jsonData;\r",
+									"    var enviadoEnBody = JSON.parse(pm.request.body.raw);\r",
+									"    \r",
+									"    if (enviadoEnBody.name) {\r",
+									"        pm.expect(inspectData.name).to.eql(enviadoEnBody.name);\r",
+									"    }\r",
+									"    \r",
+									"    if (enviadoEnBody.status) {\r",
+									"        pm.expect(inspectData.status).to.eql(enviadoEnBody.status);\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Brazo Robótico Ensamblador v2\",\n  \"status\": \"maintenance\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/machines/{{machineId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"machines",
+								"{{machineId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Machine - ERROR",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code es 404 Not Found\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El mensaje avisa que la máquina no fue encontrada\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.success).to.be.false;\r",
+									"    pm.expect(jsonData.message).to.include(\"not found\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Intento de actualización\",\n  \"status\": \"maintenance\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/machines/9999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"machines",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Machine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Se elimina la máquina con éxito o ya estaba eliminada\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 204, 404]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/machines/{{machineId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"machines",
+								"{{machineId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Machine - ERROR",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code es 404 Not Found\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El mensaje avisa que la máquina no fue encontrada\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.success).to.be.false;\r",
+									"    pm.expect(jsonData.message).to.include(\"not found\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/machines/99999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"machines",
+								"99999"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Spare Parts",
+			"item": [
+				{
+					"name": "Get All Spare Parts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/spare-parts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"spare-parts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Spare Part by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/spare-parts/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"spare-parts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Low Stock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/spare-parts/stock/low",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"spare-parts",
+								"stock",
+								"low"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Out of Stock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/spare-parts/stock/out",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"spare-parts",
+								"stock",
+								"out"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Spare Part",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code es 201 Created o 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El repuesto se ha creado correctamente y guardamos el ID\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var inspectData = jsonData.data ? jsonData.data : jsonData;\r",
+									"    var enviadoEnBody = JSON.parse(pm.request.body.raw);\r",
+									"    \r",
+									"    pm.expect(inspectData.sku).to.eql(enviadoEnBody.sku);\r",
+									"    \r",
+									"    if (inspectData.id) {\r",
+									"        pm.collectionVariables.set(\"sparePartId\", inspectData.id);\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sku\": \"REP-PRO-001\",\n  \"name\": \"Rodamiento de prueba Postman\",\n  \"current_stock\": 10,\n  \"minimum_stock\": 5,\n  \"unit_price\": 25.50\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/spare-parts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"spare-parts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Spare Part  - ERROR",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code es 400 Bad Request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El servidor avisa que el SKU ya está registrado\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.be.false;\r",
+									"    pm.expect(jsonData.message).to.match(/SKU code is already registered/i);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sku\": \"REP-PRO-001\",\n  \"name\": \"Rodamiento Duplicado\",\n  \"current_stock\": 1,\n  \"minimum_stock\": 1,\n  \"unit_price\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/spare-parts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"spare-parts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Spare Part",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code es 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El repuesto se ha modificado correctamente\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var inspectData = jsonData.data ? jsonData.data : jsonData;\r",
+									"    var enviadoEnBody = JSON.parse(pm.request.body.raw);\r",
+									"    \r",
+									"    pm.expect(jsonData.success).to.be.true;\r",
+									"    \r",
+									"    if (enviadoEnBody.name) {\r",
+									"        pm.expect(inspectData.name).to.eql(enviadoEnBody.name);\r",
+									"    }\r",
+									"    if (enviadoEnBody.unit_price) {\r",
+									"        pm.expect(Number(inspectData.unit_price)).to.eql(Number(enviadoEnBody.unit_price));\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Rodamiento de prueba Postman v2\",\n  \"unit_price\": 35.50\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/spare-parts/{{sparePartId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"spare-parts",
+								"{{sparePartId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Spare Part - ERROR",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code es 404 Not Found\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El servidor indica que no tuvo éxito\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Parte fantasma\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/spare-parts/99999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"spare-parts",
+								"99999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Spare Part",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code es 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Se elimina el repuesto con éxito\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/spare-parts/{{sparePartId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"spare-parts",
+								"{{sparePartId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Spare Part - ERROR",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code es 404 Not Found\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El servidor indica que no se encontró el repuesto\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.success).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/spare-parts/99999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"spare-parts",
+								"99999"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Work Orders",
+			"item": [
+				{
+					"name": "Get All Work Orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/work-orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"work-orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Work Order by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/work-orders/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"work-orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Work Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"machine_id\": 1,\n  \"technician_id\": 3,\n  \"issue_description\": \"Problema detectado en la máquina.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/work-orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"work-orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Start Work Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/work-orders/1/start",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"work-orders",
+								"1",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Close Work Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"resolution_comment\": \"Reparación completada exitosamente.\",\n  \"partsUsed\": [\n    {\n      \"id_part\": 1,\n      \"quantity_used\": 2\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/work-orders/1/close",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"work-orders",
+								"1",
+								"close"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Work Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"issue_description\": \"Actualización de la descripción del problema.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/work-orders/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"work-orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Work Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/work-orders/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"work-orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "machineId",
+			"value": ""
+		},
+		{
+			"key": "sparePartId",
+			"value": ""
+		}
+	]
 }
