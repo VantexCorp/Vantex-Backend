@@ -908,7 +908,7 @@
                   "pm.test(\"El servidor avisa que el SKU ya está registrado\", function () {\r",
                   "    var jsonData = pm.response.json();\r",
                   "    pm.expect(jsonData.success).to.be.false;\r",
-                  "    pm.expect(jsonData.message).to.match(/SKU ya está registrado/i);\r",
+                  "    pm.expect(jsonData.message).to.match(/SKU code is already registered/i);\r",
                   "});"
                 ],
                 "type": "text/javascript",
