@@ -6,29 +6,29 @@ const { body } = require('express-validator');
 const validateCreateSparePart = [
     body('sku')
         .isString()
-        .withMessage('El SKU debe ser una cadena de texto')
+        .withMessage('SKU must be a text string')
         .trim()
         .notEmpty()
-        .withMessage('El SKU no puede estar vacío'),
+        .withMessage('SKU cannot be empty'),
     body('name')
         .isString()
-        .withMessage('El nombre debe ser una cadena de texto')
+        .withMessage('Name must be a text string')
         .trim()
         .notEmpty()
-        .withMessage('El nombre no puede estar vacío'),
+        .withMessage('Name cannot be empty'),
     body('current_stock')
         .optional()
         .isInt({ min: 0 })
-        .withMessage('El stock actual debe ser un número entero mayor o igual a 0'),
+        .withMessage('Current stock must be an integer greater than or equal to 0'),
     body('minimum_stock')
         .optional()
         .isInt({ min: 0 })
-        .withMessage('El stock mínimo debe ser un número entero mayor o igual a 0'),
+        .withMessage('Minimum stock must be an integer greater than or equal to 0'),
     body('unit_price')
         .notEmpty()
-        .withMessage('El precio unitario es obligatorio')
+        .withMessage('Unit price is required')
         .isFloat({ min: 0 })
-        .withMessage('El precio unitario debe ser un número mayor o igual a 0')
+        .withMessage('Unit price must be a number greater than or equal to 0')
 ];
 
 /**
@@ -38,29 +38,29 @@ const validateUpdateSparePart = [
     body('sku')
         .optional()
         .isString()
-        .withMessage('El SKU debe ser una cadena de texto')
+        .withMessage('SKU must be a text string')
         .trim()
         .notEmpty()
-        .withMessage('El SKU no puede estar vacío'),
+        .withMessage('SKU cannot be empty'),
     body('name')
         .optional()
         .isString()
-        .withMessage('El nombre debe ser una cadena de texto')
+        .withMessage('Name must be a text string')
         .trim()
         .notEmpty()
-        .withMessage('El nombre no puede estar vacío'),
+        .withMessage('Name cannot be empty'),
     body('current_stock')
         .optional()
         .isInt({ min: 0 })
-        .withMessage('El stock actual debe ser un número entero mayor o igual a 0'),
+        .withMessage('Current stock must be an integer greater than or equal to 0'),
     body('minimum_stock')
         .optional()
         .isInt({ min: 0 })
-        .withMessage('El stock mínimo debe ser un número entero mayor o igual a 0'),
+        .withMessage('Minimum stock must be an integer greater than or equal to 0'),
     body('unit_price')
         .optional()
         .isFloat({ min: 0 })
-        .withMessage('El precio unitario debe ser un número mayor o igual a 0')
+        .withMessage('Unit price must be a number greater than or equal to 0')
 ];
 
 module.exports = {

@@ -82,7 +82,7 @@ async function modifyMachine(id, rawUpdateData) {
 
   const updatedRows = await db('machines').where('id', id).update(safeData);
   if (updatedRows === 0) {
-    throw { status: 404, message: "Máquina no encontrada" };
+    throw { status: 404, message: "Machine not found" };
   }
   return await findMachineById(id);
 }
@@ -93,7 +93,7 @@ async function modifyMachine(id, rawUpdateData) {
 async function removeMachine(id) {
   const deletedRows = await db('machines').where('id', id).del();
   if (deletedRows === 0) {
-    throw { status: 404, message: "Máquina no encontrada" };
+    throw { status: 404, message: "Machine not found" };
   }
 }
 

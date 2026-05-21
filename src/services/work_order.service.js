@@ -123,7 +123,7 @@ async function updateWorkOrder(id, rawData) {
 
     const updatedRows = await db('work_orders').where({ id }).update(safeData);
     if (updatedRows === 0) {
-        throw { status: 404, message: "Orden de trabajo no encontrada" };
+        throw { status: 404, message: "Work order not found" };
     }
 
     return await findWorkOrderById(id);
