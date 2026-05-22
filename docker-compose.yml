@@ -13,6 +13,8 @@ services:
       - vantex_db_data:/var/lib/mysql
 
   api:
+    profiles:
+      - production
     build: .
     container_name: vantex_api
     restart: always
