@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth.route');
 const machineRoutes = require('./routes/machine.route');
 const workOrderRoutes = require('./routes/work_order.route');
 const sparePartRoutes = require('./routes/spare_part.route');
+const reviewRoutes = require('./routes/review.route');
 
 const { initCronJobs } = require('./utils/cron.utils');
 
@@ -14,11 +15,13 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/machines', machineRoutes);
 app.use('/api/work-orders', workOrderRoutes);
 app.use('/api/spare-parts', sparePartRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 app.get('/', (req, res) => {
     res.json({ message: 'Vantex Backend API is running' });
