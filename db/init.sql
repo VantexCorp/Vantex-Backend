@@ -51,6 +51,14 @@ CREATE TABLE IF NOT EXISTS work_orders (
     FOREIGN KEY (machine_id) REFERENCES machines(id) ON DELETE RESTRICT
 );
 
+CREATE TABLE IF NOT EXISTS resenas_users (
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    puntuacion INT NOT NULL CHECK (puntuacion >= 1 AND puntuacion <= 5),
+    comentario TEXT,
+    work_order_id INT NOT NULL,
+    FOREIGN KEY (work_order_id) REFERENCES work_orders(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS material_used (
     id_work_order INT NOT NULL,
     id_part INT NOT NULL,
